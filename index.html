@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./script.js"></script>
+  <link rel="stylesheet" href="./style.css" type="text/css" > 
+</head>
+<body>
+  <div class="main-elements-control">
+    <div class="three"><h1>Учет моих расходов</h1></div>
+    <div class="form-controll">
+      <div class="form-input">
+        <p>Куда было потрачено:</p>
+        <input type="text" id="add-shop" placeholder="Куда было потрачено" >
+      </div>
+      <div class="form-input">
+        <p>Сколько было потрачено:</p>
+        <input type="text" id="price-shop" placeholder="Сколько было потрачено" >
+      </div>
+      <button onclick="onClickButton()" >Добавить</button>
+    </div>
+    <span class="sum-shop">Итого: <p class="count-price"></p> р.</span>
+  </div>
+  <div id="content-page"></div>
+</body>
+</html>

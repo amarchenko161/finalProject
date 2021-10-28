@@ -1,0 +1,21 @@
+.form-controll {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.main-elements-control{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.three{
+  text-align: center;
+}
+
+.sum-shop{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
