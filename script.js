@@ -7,12 +7,12 @@ let count = 0;
 
 const day = () => {
   let today = new Date();
-let dd = String(today.getDate()).padStart(2, '0');
-let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-let yyyy = today.getFullYear();
-today = dd + '.' + mm + '.' + yyyy;
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  const yyyy = today.getFullYear();
+  today = dd + '.' + mm + '.' + yyyy;
 
-return today
+  return today
 }
 
 window.onload = init = () => {
@@ -41,6 +41,7 @@ const onClickButton = () => {
 const updateShop = (event) => {
   valueInputShop = event.target.value;
 };
+
 const updatePrice = (event) => {
   valueInputPrice = event.target.value;
 };
@@ -56,13 +57,15 @@ const render = () => {
     container.id = `buy-${index}`;
     container.className = "shoplist-container";
     const valId = document.createElement("p");
-    valId.innerText = `${index +1} )` 
+    valId.className = 'index-id';
+    valId.innerText = `${index +1} )`;
     const valShop = document.createElement("p");
     valShop.innerText = item.shop;
     const valPrice = document.createElement("p");
     valPrice.innerText = item.price + ` p.`;
     const valDate = document.createElement("p");
-    valDate.innerText = `${item.date}`;
+    valDate.className = 'date';
+    valDate.innerText = ` ${item.date} `;
     container.appendChild(valId);
     container.appendChild(valShop);
     container.appendChild(valDate);
@@ -81,10 +84,10 @@ const render = () => {
     imageEdit.onclick = () => editElements (inputShopValue,inputPriceValue, valShop, valPrice, container, item , imageEdit, imageDelete );
   });
 
-
   const sumPrice = document.getElementById('count-price');
   sumPrice.innerText = count;
   count = 0;
+
 }
 
 const editElements = (inputShopValue,inputPriceValue, valShop, valPrice , container, item , imageEdit, imageDelete) => {
