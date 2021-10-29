@@ -12,12 +12,12 @@ body {
 }
 
 #add-shop {
-  width: 70%;
+  width: 90%;
   height: 35px;
 }
 
 #price-shop {
-  width: 70%;
+  width: 90%;
   height: 35px;
 }
 
@@ -25,7 +25,11 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 90%;
+  width: 100%;
+}
+
+.form-controll p {
+ width: 200px;
 }
 
 .main-elements-control {
@@ -52,6 +56,11 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.shoplist-container {
+  height: 30px;
 }
 
 .shoplist-container p {
@@ -60,7 +69,8 @@ body {
 }
 
 .index-id {
-  width: 5% !important;
+  width: 30px !important;
+  word-wrap: none !important;
 }
 
 .date {
@@ -102,7 +112,7 @@ body {
 }
 
 #content-page {
-  width: 60%;
+  width: 90%;
 }
 
 

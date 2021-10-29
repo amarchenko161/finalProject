@@ -1,9 +1,14 @@
-let allShop = [];
+const allShop = [];
 let valueInputShop = "";
 let valueInputPrice = "";
 let inputShop = null;
 let inputPrice = null;
 let count = 0;
+let tempValuesInEdit = {
+  shop: '',
+  price: '',
+  date: ''
+};
 
 const day = () => {
   let today = new Date();
@@ -21,13 +26,13 @@ window.onload = init = () => {
   inputShop.addEventListener("change", updateShop);
   inputPrice.addEventListener("change", updatePrice);
   render();
-};
+}
 
 const onClickButton = () => {
   allShop.push({
     shop: valueInputShop,
     price: valueInputPrice,
-    date : day()
+    date: day()
   });
   
   valueInputShop = "";
@@ -35,16 +40,15 @@ const onClickButton = () => {
   inputShop.value = "";
   inputPrice.value = "";
   render();
-  console.log(allShop);
-};
+}
 
 const updateShop = (event) => {
   valueInputShop = event.target.value;
-};
+}
 
 const updatePrice = (event) => {
   valueInputPrice = event.target.value;
-};
+}
 
 const render = () => {
   const content = document.getElementById("content-page");
@@ -58,19 +62,34 @@ const render = () => {
     container.className = "shoplist-container";
     const valId = document.createElement("p");
     valId.className = 'index-id';
-    valId.innerText = `${index +1} )`;
+    valId.innerText = `${index + 1} )`;
     const valShop = document.createElement("p");
+    valShop.className = 'shop-style';
     valShop.innerText = item.shop;
     const valPrice = document.createElement("p");
     valPrice.innerText = item.price + ` p.`;
     const valDate = document.createElement("p");
     valDate.className = 'date';
-    valDate.innerText = ` ${item.date} `;
+    valDate.innerText = item.date;
+    valShop.ondblclick = () => {
+      const [inputShopValue] = dbEditShop(index);
+      container.replaceChild(inputShopValue, valShop);
+      tempValuesInEdit = item;
+    } 
+    valPrice.ondblclick = () => {
+      const [inputPriceValue] = dbEditPrice(index);
+      container.replaceChild(inputPriceValue, valPrice);
+      tempValuesInEdit = item;
+    }  
+    valDate.ondblclick = () => {
+      const [inputDateValue] = dbEditDate(index);
+      container.replaceChild(inputDateValue, valDate);
+      tempValuesInEdit = item;
+    }
     container.appendChild(valId);
     container.appendChild(valShop);
     container.appendChild(valDate);
     container.appendChild(valPrice);
-    content.appendChild(container);
     count = count + Number(item.price)
     const imageEdit = document.createElement("img");
     imageEdit.src = "images/edit.png";
@@ -78,10 +97,18 @@ const render = () => {
     const imageDelete = document.createElement("img");
     imageDelete.src = "images/close.png";
     container.appendChild(imageDelete);
-    const inputShopValue = document.createElement("input");
-    const inputPriceValue = document.createElement("input");
+ 
     imageDelete.onclick = () => deleteElements (index, content, container);
-    imageEdit.onclick = () => editElements (inputShopValue,inputPriceValue, valShop, valPrice, container, item , imageEdit, imageDelete );
+    imageEdit.onclick = () => {
+      const [inputShopValue, inputPriceValue, inputDateValue] = editElements(index);
+      container.replaceChild(inputShopValue, valShop);
+      container.replaceChild(inputPriceValue, valPrice);
+      container.replaceChild(inputDateValue, valDate);
+      imageEdit.onclick = () => saveElements(index);
+      imageDelete.onclick = () => render();
+      tempValuesInEdit = item; 
+    }
+    content.appendChild(container);
   });
 
   const sumPrice = document.getElementById('count-price');
@@ -90,30 +117,72 @@ const render = () => {
 
 }
 
-const editElements = (inputShopValue,inputPriceValue, valShop, valPrice , container, item , imageEdit, imageDelete) => {
-  inputShopValue.value = valShop.innerText;
-  valPrice.innerText = item.price;
-  inputPriceValue.value = valPrice.innerText;
-  container.replaceChild(inputShopValue, valShop);
-  container.replaceChild(inputPriceValue, valPrice);
-  imageEdit.onclick = () => saveElements(inputShopValue,inputPriceValue, valShop, valPrice , container, item);
-  imageDelete.onclick = () => render();
 
+const editElements = (index) => {
+  const { shop, price, date } = allShop[index];
+  const inputShopValue = document.createElement("input");
+  inputShopValue.onchange = (e) => tempValuesInEdit = {...tempValuesInEdit, shop: e.target.value};
+  const inputPriceValue = document.createElement("input");
+  inputPriceValue.onchange = (e) => tempValuesInEdit = {...tempValuesInEdit, price: e.target.value};
+  const inputDateValue = document.createElement("input");
+  inputDateValue.type = 'date';
+  inputDateValue.onchange = (e) => tempValuesInEdit = {...tempValuesInEdit, date: e.target.value.slice(0, 10).split('-').reverse().join('.')};
+  inputShopValue.value = shop;
+  inputPriceValue.value = price;
+  inputDateValue.value = date;
+  
+  return [inputShopValue, inputPriceValue, inputDateValue];
 }
 
-const saveElements = (inputShopValue,inputPriceValue, valShop, valPrice , container, item) => {
-  valShop.innerText = inputShopValue.value;
-  valPrice.innerText = inputPriceValue.value;
-  item.shop = inputShopValue.value;
-  item.price = inputPriceValue.value;
-  container.replaceChild(valShop, inputShopValue);
-  container.replaceChild(valPrice, inputPriceValue);
+const saveElements = (index) => {
+  allShop[index] = tempValuesInEdit;
   render();
-};
+}
+
+const dbEditShop = (index) => {
+  const { shop } = allShop[index];
+  const inputShopValue = document.createElement("input");
+  inputShopValue.onchange = (e) => tempValuesInEdit = {...tempValuesInEdit, shop: e.target.value};
+  inputShopValue.value = shop;
+  inputShopValue.focus();
+  inputShopValue.onblur = () => {
+    allShop[index] = tempValuesInEdit;
+    render();
+  }
+  return [inputShopValue]
+}
+
+const dbEditPrice = (index) => {
+  const { price } = allShop[index];
+  const inputPriceValue = document.createElement("input");
+  inputPriceValue.onchange = (e) => tempValuesInEdit = {...tempValuesInEdit, price: e.target.value};
+  inputPriceValue.value = price;
+  inputPriceValue.focus();
+  inputPriceValue.onblur = () => {
+    allShop[index] = tempValuesInEdit;
+    render();
+  }
+  return [inputPriceValue]
+}
+
+const dbEditDate = (index) => {
+  const { date } = allShop[index];
+  const inputDateValue = document.createElement("input");
+  inputDateValue.type = 'date';
+  inputDateValue.onchange = (e) => tempValuesInEdit = {...tempValuesInEdit, date: e.target.value.slice(0, 10).split('-').reverse().join('.')};
+  inputDateValue.value = date;
+  inputDateValue.focus();
+  inputDateValue.onblur = () => {
+    allShop[index] = tempValuesInEdit;
+    render();
+  }
+  return [inputDateValue]
+}
+
 
 const deleteElements = (index, content, container) => {
   allShop.splice(index, 1);
   content.removeChild(container);
   render();
-};
+}
 
