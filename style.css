@@ -1,0 +1,163 @@
+body {
+  background-color: #657580;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-input {
+  width: 27%;
+}
+
+#add-shop {
+  width: 90%;
+  height: 35px;
+}
+
+#price-shop {
+  width: 90%;
+  height: 35px;
+}
+
+.form-controll {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.form-controll p {
+ width: 200px;
+}
+
+.main-elements-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.three {
+  text-align: center;
+}
+
+.sum-shop {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: 30px;
+  align-items: center;
+}
+
+.shoplist-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.shoplist-container {
+  height: 30px;
+}
+
+.shoplist-container p {
+  word-wrap: break-word;
+  width: 25%;
+}
+
+.index-id {
+  width: 30px !important;
+  word-wrap: none !important;
+}
+
+.date {
+  padding-left: 20px;
+}
+
+.shoplist-container img {
+  width: 50px;
+  height: 50px;
+}
+
+.btn-style {
+  position: relative;
+  display: inline-block;
+  width: 10em;
+  height: 2.5em;
+  line-height: 2.5em;
+  vertical-align: middle;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: 0 -1px 1px #777;
+  color: #fff;
+  outline: none;
+  border: 2px solid #f64c2b;
+  border-radius: 5px;
+  box-shadow: 0 0 0 60px rgba(0, 0, 0, 0) inset, 0.1em 0.1em 0.2em #800;
+  background: linear-gradient(#fb9575, #f45a38 48%, #ea1502 52%, #f02f17);
+}
+
+.btn-style:active {
+  top: 0.1em;
+  left: 0.1em;
+  box-shadow: 0 0 0 60px rgba(0, 0, 0, 0.05) inset;
+}
+
+.btn-add {
+  display: flex;
+  align-items: flex-end;
+}
+
+#content-page {
+  width: 90%;
+}
+
+
+@media screen and (max-width: 710px) {
+  .form-controll {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90%;
+  }
+
+  #add-shop {
+    width: 100%;
+    height: 35px;
+  }
+
+  #price-shop {
+    width: 100%;
+    height: 35px;
+  }
+
+  .form-controll {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .btn-style {
+    margin-top: 10%;
+    position: relative;
+    display: inline-block;
+    width: 10em;
+    height: 2.5em;
+    line-height: 2.5em;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px #777;
+    color: #fff;
+    outline: none;
+    border: 2px solid #f64c2b;
+    border-radius: 5px;
+    box-shadow: 0 0 0 60px rgb(0 0 0 / 0%) inset, 0.1em 0.1em 0.2em #800;
+    background: linear-gradient(#fb9575, #f45a38 48%, #ea1502 52%, #f02f17);
+  }
+}
