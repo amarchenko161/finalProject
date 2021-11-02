@@ -29,7 +29,7 @@ body {
 }
 
 .form-controll p {
- width: 200px;
+  width: 200px;
 }
 
 .main-elements-control {
@@ -55,22 +55,48 @@ body {
 .shoplist-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   margin-bottom: 10px;
 }
 
-.shoplist-container {
-  height: 30px;
+.content-shop {
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+  align-items: center;
 }
 
-.shoplist-container p {
+.content-other-info {
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content-price-date {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.content-shop p {
   word-wrap: break-word;
-  width: 25%;
 }
 
-.index-id {
-  width: 30px !important;
-  word-wrap: none !important;
+.content-shop input {
+  height: 20px;
+  align-items: center;
+}
+
+.content-price-date input {
+  height: 20px;
+  align-items: center;
+  width: 40%;
+}
+
+.shop-style {
+  width: 90%;
 }
 
 .date {
@@ -115,8 +141,7 @@ body {
   width: 90%;
 }
 
-
-@media screen and (max-width: 710px) {
+@media screen and (max-width: 768px) {
   .form-controll {
     display: flex;
     flex-direction: column;
@@ -159,5 +184,54 @@ body {
     border-radius: 5px;
     box-shadow: 0 0 0 60px rgb(0 0 0 / 0%) inset, 0.1em 0.1em 0.2em #800;
     background: linear-gradient(#fb9575, #f45a38 48%, #ea1502 52%, #f02f17);
+  }
+
+  .form-input {
+    width: 70%;
+  }
+
+  .content-other-info {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .content-price-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+  }
+
+  .content-shop {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    align-items: center;
+  }
+
+  .content-price-date input {
+    height: 20px;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (max-width: 280px) {
+  .content-price-date input {
+    height: 20px;
+    align-items: center;
+    width: 160%;
+    margin-bottom: 5px;
+  }
+  
+  .content-shop input {
+    height: 20px;
+    align-items: center;
+    width: 67%;
   }
 }

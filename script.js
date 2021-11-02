@@ -1,14 +1,14 @@
 let allShop = [];
 let valueInputShop = "";
-let valueInputPrice = "";
+let valueInputPrice = null;
 let inputShop = null;
 let inputPrice = null;
 let count = 0;
 let tempValuesInEdit = {
   shop: "",
-  price: "",
+  price: null,
   date: "",
-};
+}
 
 const day = () => {
   let today = new Date();
@@ -18,7 +18,7 @@ const day = () => {
   today = dd + "." + mm + "." + yyyy;
 
   return today;
-};
+}
 
 window.onload = init = async () => {
   inputShop = document.getElementById("add-shop");
@@ -32,38 +32,43 @@ window.onload = init = async () => {
   const result = await resp.json();
   allShop = result.data;
   render();
-};
+}
 
 const onClickButton = async () => {
-  const resp = await fetch("http://localhost:8000/createShop", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-    },
-    body: JSON.stringify({
-      shop: valueInputShop,
-      price: valueInputPrice,
-      date: day(),
-    }),
-  });
+  //проверка иф
+  if ( valueInputShop.trim() && valueInputPrice ) {
+    const resp = await fetch("http://localhost:8000/createShop", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        shop: valueInputShop,
+        price: valueInputPrice,
+        date: day(),
+      }),
+    });
 
-  const result = await resp.json();
-  allShop.push(result.data);
-  valueInputShop = "";
-  valueInputPrice = "";
-  inputShop.value = "";
-  inputPrice.value = "";
-  render();
-};
+    const result = await resp.json();
+    allShop.push(result.data);
+    valueInputShop = "";
+    valueInputPrice = "";
+    inputShop.value = "";
+    inputPrice.value = "";
+    render();
+  } else {
+    alert("Проверьте заполненность полей");
+  }
+}
 
 const updateShop = (event) => {
   valueInputShop = event.target.value;
-};
+}
 
 const updatePrice = (event) => {
   valueInputPrice = event.target.value;
-};
+}
 
 const render = () => {
   const content = document.getElementById("content-page");
@@ -77,7 +82,7 @@ const render = () => {
     container.className = "shoplist-container";
     const valId = document.createElement("p");
     valId.className = "index-id";
-    valId.innerText = `${index + 1} )`;
+    valId.innerText = `${index + 1})`;
     const valShop = document.createElement("p");
     valShop.className = "shop-style";
     valShop.innerText = item.shop;
@@ -88,60 +93,72 @@ const render = () => {
     valDate.innerText = item.date;
     valShop.ondblclick = () => {
       const [inputShopValue] = dbEditShop(index);
-      container.replaceChild(inputShopValue, valShop);
+      contentShop.replaceChild(inputShopValue, valShop);
       tempValuesInEdit = item;
-    };
+    }
     valPrice.ondblclick = () => {
       const [inputPriceValue] = dbEditPrice(index);
-      container.replaceChild(inputPriceValue, valPrice);
+      contentPriceAndDate.replaceChild(inputPriceValue, valPrice);
       tempValuesInEdit = item;
-    };
+    }
     valDate.ondblclick = () => {
       const [inputDateValue] = dbEditDate(index);
-      container.replaceChild(inputDateValue, valDate);
+      contentPriceAndDate.replaceChild(inputDateValue, valDate);
       tempValuesInEdit = item;
-    };
-    container.appendChild(valId);
-    container.appendChild(valShop);
-    container.appendChild(valDate);
-    container.appendChild(valPrice);
+    }
+    const contentShop = document.createElement('div');
+    contentShop.className = "content-shop"
+    const contentOtherInfo = document.createElement('div');
+    contentOtherInfo.className = "content-other-info";
+    const contentPriceAndDate = document.createElement('div');
+    contentPriceAndDate.className = "content-price-date";
+    const contentButton = document.createElement('div');
+    contentButton.className = "content-button";
+    contentShop.appendChild(valId);
+    contentShop.appendChild(valShop);
+    container.appendChild(contentShop);
+    contentPriceAndDate.appendChild(valDate);
+    contentPriceAndDate.appendChild(valPrice);
+    contentOtherInfo.appendChild(contentPriceAndDate);
     count = count + Number(item.price);
     const imageEdit = document.createElement("img");
     imageEdit.src = "images/edit.png";
-    container.appendChild(imageEdit);
+    contentButton.appendChild(imageEdit);
     const imageDelete = document.createElement("img");
     imageDelete.src = "images/close.png";
-    container.appendChild(imageDelete);
-
+    contentButton.appendChild(imageDelete);
     imageDelete.onclick = () => deleteElements(index);
     imageEdit.onclick = () => {
       const [inputShopValue, inputPriceValue, inputDateValue] =
         editElements(index);
-      container.replaceChild(inputShopValue, valShop);
-      container.replaceChild(inputPriceValue, valPrice);
-      container.replaceChild(inputDateValue, valDate);
+      contentShop.replaceChild(inputShopValue, valShop);
+      contentPriceAndDate.replaceChild(inputPriceValue, valPrice);
+      contentPriceAndDate.replaceChild(inputDateValue, valDate);
       imageEdit.onclick = () => saveElements(index);
       imageDelete.onclick = () => render();
       tempValuesInEdit = item;
-    };
+    }
+    contentOtherInfo.appendChild(contentButton);
+    container.appendChild(contentOtherInfo);
     content.appendChild(container);
   });
 
   const sumPrice = document.getElementById("count-price");
   sumPrice.innerText = count;
   count = 0;
-};
+}
 
 const editElements = (index) => {
   const { shop, price, date } = allShop[index];
   const inputShopValue = document.createElement("input");
-  inputShopValue.onchange = (e) =>
-    (tempValuesInEdit = { ...tempValuesInEdit, shop: e.target.value });
   const inputPriceValue = document.createElement("input");
-  inputPriceValue.onchange = (e) =>
-    (tempValuesInEdit = { ...tempValuesInEdit, price: e.target.value });
+  inputPriceValue.type = "number";
   const inputDateValue = document.createElement("input");
   inputDateValue.type = "date";
+  inputShopValue.onchange = (e) =>
+    (tempValuesInEdit = { ...tempValuesInEdit, shop: e.target.value });
+  inputPriceValue.onchange = (e) =>
+    (tempValuesInEdit = { ...tempValuesInEdit, price: e.target.value });
   inputDateValue.onchange = (e) =>
     (tempValuesInEdit = {
       ...tempValuesInEdit,
@@ -154,17 +171,22 @@ const editElements = (index) => {
 };
 
 const saveElements = async (index) => {
-  const resp = await fetch("http://localhost:8000/updateShop", {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-      "Access-Control-Allow-Origin": "*",
-    },
-    body: JSON.stringify(tempValuesInEdit),
-  });
-  const result = await resp.json();
-  allShop = result.data;
-  render();
+  const { shop, price } = tempValuesInEdit;
+  if ( shop.trim() && price ) {
+    const resp = await fetch("http://localhost:8000/updateShop", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(tempValuesInEdit),
+    });
+    const result = await resp.json();
+    allShop = result.data;
+    render();
+  } else {
+    alert("Проверьте заполненность полей");
+  }
 };
 
 const dbEditShop = (index) => {
@@ -175,40 +197,49 @@ const dbEditShop = (index) => {
   inputShopValue.value = shop;
   inputShopValue.focus();
   inputShopValue.onblur = async () => {
-    const resp = await fetch("http://localhost:8000/updateShop", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(tempValuesInEdit),
-    });
-    const result = await resp.json();
-    allShop = result.data;
-    render();
-  };
+    if (inputShopValue.value) {
+      const resp = await fetch("http://localhost:8000/updateShop", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(tempValuesInEdit),
+      });
+      const result = await resp.json();
+      allShop = result.data;
+      render();
+    } else {
+      alert("Заполните поле!");
+    }
+  }
   return [inputShopValue];
-};
+}
 
 const dbEditPrice = (index) => {
   const { price } = allShop[index];
   const inputPriceValue = document.createElement("input");
+  inputPriceValue.type = "number";
   inputPriceValue.onchange = (e) =>
     (tempValuesInEdit = { ...tempValuesInEdit, price: e.target.value });
   inputPriceValue.value = price;
   inputPriceValue.focus();
   inputPriceValue.onblur = async () => {
-    const resp = await fetch("http://localhost:8000/updateShop", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(tempValuesInEdit),
-    });
-    const result = await resp.json();
-    allShop = result.data;
-    render();
+    if ( inputPriceValue.value ) {
+      const resp = await fetch("http://localhost:8000/updateShop", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(tempValuesInEdit),
+      });
+      const result = await resp.json();
+      allShop = result.data;
+      render();
+    } else {
+      alert("Заполните поле!");
+    }
   };
   return [inputPriceValue];
 };
@@ -254,4 +285,4 @@ const deleteElements = async (index) => {
   const result = await resp.json();
   allShop = result.data;
   render();
-};
+}
