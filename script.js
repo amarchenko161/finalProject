@@ -8,7 +8,7 @@ let tempValuesInEdit = {
   shop: "",
   price: null,
   date: "",
-};
+}
 
 const day = () => {
   let today = new Date();
@@ -18,7 +18,7 @@ const day = () => {
   today = dd + "." + mm + "." + yyyy;
 
   return today;
-};
+}
 
 window.onload = init = async () => {
   inputShop = document.getElementById("add-shop");
@@ -32,11 +32,11 @@ window.onload = init = async () => {
   const result = await resp.json();
   allShop = result.data;
   render();
-};
+}
 
 const onClickButton = async () => {
   //проверка иф
-  if (valueInputShop.trim() !== "" && valueInputPrice !== null) {
+  if ( valueInputShop.trim() && valueInputPrice ) {
     const resp = await fetch("http://localhost:8000/createShop", {
       method: "POST",
       headers: {
@@ -60,15 +60,15 @@ const onClickButton = async () => {
   } else {
     alert("Проверьте заполненность полей");
   }
-};
+}
 
 const updateShop = (event) => {
   valueInputShop = event.target.value;
-};
+}
 
 const updatePrice = (event) => {
   valueInputPrice = event.target.value;
-};
+}
 
 const render = () => {
   const content = document.getElementById("content-page");
@@ -95,17 +95,17 @@ const render = () => {
       const [inputShopValue] = dbEditShop(index);
       contentShop.replaceChild(inputShopValue, valShop);
       tempValuesInEdit = item;
-    };
+    }
     valPrice.ondblclick = () => {
       const [inputPriceValue] = dbEditPrice(index);
       contentPriceAndDate.replaceChild(inputPriceValue, valPrice);
       tempValuesInEdit = item;
-    };
+    }
     valDate.ondblclick = () => {
       const [inputDateValue] = dbEditDate(index);
       contentPriceAndDate.replaceChild(inputDateValue, valDate);
       tempValuesInEdit = item;
-    };
+    }
     const contentShop = document.createElement('div');
     contentShop.className = "content-shop"
     const contentOtherInfo = document.createElement('div');
@@ -114,16 +114,12 @@ const render = () => {
     contentPriceAndDate.className = "content-price-date";
     const contentButton = document.createElement('div');
     contentButton.className = "content-button";
-
     contentShop.appendChild(valId);
     contentShop.appendChild(valShop);
     container.appendChild(contentShop);
-
     contentPriceAndDate.appendChild(valDate);
     contentPriceAndDate.appendChild(valPrice);
     contentOtherInfo.appendChild(contentPriceAndDate);
-    
-
     count = count + Number(item.price);
     const imageEdit = document.createElement("img");
     imageEdit.src = "images/edit.png";
@@ -131,7 +127,6 @@ const render = () => {
     const imageDelete = document.createElement("img");
     imageDelete.src = "images/close.png";
     contentButton.appendChild(imageDelete);
-
     imageDelete.onclick = () => deleteElements(index);
     imageEdit.onclick = () => {
       const [inputShopValue, inputPriceValue, inputDateValue] =
@@ -142,7 +137,7 @@ const render = () => {
       imageEdit.onclick = () => saveElements(index);
       imageDelete.onclick = () => render();
       tempValuesInEdit = item;
-    };
+    }
     contentOtherInfo.appendChild(contentButton);
     container.appendChild(contentOtherInfo);
     content.appendChild(container);
@@ -151,7 +146,7 @@ const render = () => {
   const sumPrice = document.getElementById("count-price");
   sumPrice.innerText = count;
   count = 0;
-};
+}
 
 const editElements = (index) => {
   const { shop, price, date } = allShop[index];
@@ -177,7 +172,7 @@ const editElements = (index) => {
 
 const saveElements = async (index) => {
   const { shop, price } = tempValuesInEdit;
-  if (shop.trim() !== "" && price !== "") {
+  if ( shop.trim() && price ) {
     const resp = await fetch("http://localhost:8000/updateShop", {
       method: "PATCH",
       headers: {
@@ -202,7 +197,7 @@ const dbEditShop = (index) => {
   inputShopValue.value = shop;
   inputShopValue.focus();
   inputShopValue.onblur = async () => {
-    if (inputShopValue.value !== "") {
+    if (inputShopValue.value) {
       const resp = await fetch("http://localhost:8000/updateShop", {
         method: "PATCH",
         headers: {
@@ -217,9 +212,9 @@ const dbEditShop = (index) => {
     } else {
       alert("Заполните поле!");
     }
-  };
+  }
   return [inputShopValue];
-};
+}
 
 const dbEditPrice = (index) => {
   const { price } = allShop[index];
@@ -230,7 +225,7 @@ const dbEditPrice = (index) => {
   inputPriceValue.value = price;
   inputPriceValue.focus();
   inputPriceValue.onblur = async () => {
-    if (inputPriceValue.value !== "") {
+    if ( inputPriceValue.value ) {
       const resp = await fetch("http://localhost:8000/updateShop", {
         method: "PATCH",
         headers: {
@@ -290,4 +285,4 @@ const deleteElements = async (index) => {
   const result = await resp.json();
   allShop = result.data;
   render();
-};
+}

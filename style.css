@@ -64,6 +64,7 @@ body {
   width: 40%;
   align-items: center;
 }
+
 .content-other-info {
   display: flex;
   flex-direction: row;
@@ -71,6 +72,7 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+
 .content-price-date {
   display: flex;
   flex-direction: row;
@@ -226,6 +228,7 @@ body {
     width: 160%;
     margin-bottom: 5px;
   }
+  
   .content-shop input {
     height: 20px;
     align-items: center;
