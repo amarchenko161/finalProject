@@ -90,7 +90,7 @@ const render = () => {
     valPrice.innerText = item.price + ` p.`;
     const valDate = document.createElement("p");
     valDate.className = "date";
-    valDate.innerText = item.date;
+    valDate.innerText = item.date.slice(0, 10).split("-").reverse().join(".");
     valShop.ondblclick = () => {
       const [inputShopValue] = dbEditShop(index);
       contentShop.replaceChild(inputShopValue, valShop);
@@ -123,6 +123,8 @@ const render = () => {
     count = count + Number(item.price);
     const imageEdit = document.createElement("img");
     imageEdit.src = "images/edit.png";
+    const imageSave = document.createElement("img");
+    imageSave.src = "images/done.png"
     contentButton.appendChild(imageEdit);
     const imageDelete = document.createElement("img");
     imageDelete.src = "images/close.png";
@@ -131,10 +133,11 @@ const render = () => {
     imageEdit.onclick = () => {
       const [inputShopValue, inputPriceValue, inputDateValue] =
         editElements(index);
+      contentButton.replaceChild(imageSave, imageEdit);
       contentShop.replaceChild(inputShopValue, valShop);
       contentPriceAndDate.replaceChild(inputPriceValue, valPrice);
       contentPriceAndDate.replaceChild(inputDateValue, valDate);
-      imageEdit.onclick = () => saveElements(index);
+      imageSave.onclick = () => saveElements(index);
       imageDelete.onclick = () => render();
       tempValuesInEdit = item;
     }
@@ -162,11 +165,11 @@ const editElements = (index) => {
   inputDateValue.onchange = (e) =>
     (tempValuesInEdit = {
       ...tempValuesInEdit,
-      date: e.target.value.slice(0, 10).split("-").reverse().join("."),
+      date: e.target.value,
     });
   inputShopValue.value = shop;
   inputPriceValue.value = price;
-  inputDateValue.value = date;
+  inputDateValue.value = date.slice(0, 10).split(".").reverse().join("-");
   return [inputShopValue, inputPriceValue, inputDateValue];
 };
 
