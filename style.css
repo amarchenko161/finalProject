@@ -5,6 +5,8 @@ body {
   width: 100%;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .form-input {
@@ -50,6 +52,7 @@ body {
   justify-content: flex-end;
   font-size: 30px;
   align-items: center;
+  width: 65%;
 }
 
 .shoplist-container {
@@ -139,9 +142,17 @@ body {
 
 #content-page {
   width: 90%;
+  height: 70vh;
+  overflow-y: auto;
 }
 
 @media screen and (max-width: 768px) {
+  .btn-add {
+    display: flex;
+    align-items: flex-end;
+    width: 70%;
+    justify-content: flex-end;
+}
   .form-controll {
     display: flex;
     flex-direction: column;
